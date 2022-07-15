@@ -25,4 +25,8 @@ public class ClienteService {
     public List<Cliente> recuperarTodos() {
         return clienteRepository.findAll();
     }
+
+    public void excluir(Long id) {
+        clienteRepository.deleteById(id);
+    }
 }

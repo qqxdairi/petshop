@@ -40,4 +40,10 @@ public class ClienteController {
     public ResponseEntity<List<Cliente>> recuperarTodos() {
         return ResponseEntity.ok().body(clienteService.recuperarTodos());
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        clienteService.excluir(id);
+        return ResponseEntity.noContent().build();
+    }
 }
