@@ -1,29 +1,14 @@
-package br.com.projetocurso.petshop.model;
+package br.com.projetocurso.petshop.dto;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Entity
-public class Cliente {
+public class ClienteDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column(length = 100, nullable = false)
     private String nome;
-
-    @Column(length = 14, nullable = false, unique = true)
     private String cpf;
-
-    @Column(nullable = false)
     private Integer idade;
-
-    @Column(length = 1, nullable = false)
-    private String genero;
-
-    @OneToMany(mappedBy = "cliente")
-    private List<Animal> animais;
+    private List<AnimalDto> animais;
 
     public Long getId() {
         return id;
@@ -57,19 +42,11 @@ public class Cliente {
         this.idade = idade;
     }
 
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
-    public List<Animal> getAnimais() {
+    public List<AnimalDto> getAnimais() {
         return animais;
     }
 
-    public void setAnimais(List<Animal> animais) {
+    public void setAnimais(List<AnimalDto> animais) {
         this.animais = animais;
     }
 }

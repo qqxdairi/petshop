@@ -1,5 +1,8 @@
 package br.com.projetocurso.petshop.controller;
 
+import br.com.projetocurso.petshop.dto.ClienteDto;
+import br.com.projetocurso.petshop.mapper.ClienteMapper;
+import br.com.projetocurso.petshop.model.Animal;
 import br.com.projetocurso.petshop.model.Cliente;
 import br.com.projetocurso.petshop.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,28 +20,31 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    @Autowired
+    private ClienteMapper clienteMapper;
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cliente> incluir(@RequestBody Cliente cliente) {
-        Cliente clienteIncluido = clienteService.salvar(cliente);
+    public ResponseEntity<ClienteDto> incluir(@RequestBody Cliente cliente) {
+        ClienteDto clienteIncluido = clienteMapper.toDto(clienteService.salvar(cliente));
         URI localizacao = URI.create("cliente/" + clienteIncluido.getId());
         return ResponseEntity.created(localizacao).body(clienteIncluido);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
+    public ResponseEntity<ClienteDto> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
         cliente.setId(id);
-        Cliente clienteAtualizado = clienteService.salvar(cliente);
+        ClienteDto clienteAtualizado = clienteMapper.toDto(clienteService.salvar(cliente));
         return ResponseEntity.ok().body(clienteAtualizado);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cliente> recuperarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok().body(clienteService.recuperarPorId(id));
+    public ResponseEntity<ClienteDto> recuperarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(clienteMapper.toDto(clienteService.recuperarPorId(id)));
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Cliente>> recuperarTodos() {
-        return ResponseEntity.ok().body(clienteService.recuperarTodos());
+    public ResponseEntity<List<ClienteDto>> recuperarTodos() {
+        return ResponseEntity.ok().body(clienteMapper.toCollectionDto(clienteService.recuperarTodos()));
     }
 
     @DeleteMapping(value = "/{id}")
